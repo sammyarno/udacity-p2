@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-import { Button } from 'semantic-ui-react';
+import Routes from './components/routes';
+import { Switch } from 'react-router-dom';
 
 class App extends Component {
 
@@ -15,7 +14,7 @@ class App extends Component {
 
   componentDidMount() {
     const url = `${process.env.REACT_APP_BACKEND}/categories`;
-    console.log('fetching from url', url);
+    //console.log('fetching from url', url);
     fetch(url, { headers: { 'Authorization': 'Sam' } } )
       .then( (res) => { return(res.text()) })
       .then((data) => {
@@ -26,18 +25,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button primary content='asd'/>
-        <p>
-          Talking to the backend yields these categories: <br/>
-          {this.state.backend}
-        </p>
+        {/* {this.state.backend}
+        <hr/> */}
+        {/* router */}
+        {Routes}
       </div>
     );
   }
