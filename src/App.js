@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { Button } from 'semantic-ui-react';
+
 class App extends Component {
 
   constructor(props) {
@@ -31,6 +33,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <Button primary content='asd'/>
         <p>
           Talking to the backend yields these categories: <br/>
           {this.state.backend}
