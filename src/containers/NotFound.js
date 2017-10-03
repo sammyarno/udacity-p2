@@ -10,7 +10,7 @@ class NotFound extends Component {
       <div>
         <center>
           <h1>Page not found</h1>
-          <Link as='header' color='grey' to='/'>redirect to home</Link>
+          <Link as='h4' color='grey' to='/'>redirect to home</Link>
         </center>
       </div>
     )
