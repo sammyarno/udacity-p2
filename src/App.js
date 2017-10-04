@@ -4,6 +4,13 @@ import Header from './components/header';
 import Routes from './components/routes';
 import { Switch } from 'react-router-dom';
 
+import ScrollToTop from 'react-scroll-up';
+import { Icon } from 'semantic-ui-react';
+
+const ScrollStyle = {
+  color: 'rgba(249, 117, 117, 0.6)'
+}
+
 class App extends Component {
 
   // constructor(props) {
@@ -27,8 +34,10 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        {/* router */}
         <Routes />
+        <ScrollToTop style={ScrollStyle} showUnder={200} duration={2000}>
+          <Icon name='arrow circle up' size='huge' />
+        </ScrollToTop>
       </div>
     );
   }
