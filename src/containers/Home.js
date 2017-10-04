@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LazyLoad from 'react-lazyload';
 
 import { Header, Grid, Container, Item, Divider, Paragraph, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
 
@@ -36,7 +37,6 @@ class Home extends Component {
 
   render() {
     const {cats} = this.state
-
     const catList = cats.map(cat =>
       <Grid.Column key={cat.id} textAlign='center'>
         <Label as='a' basic color='orange'>{cat.name}</Label>
@@ -44,25 +44,26 @@ class Home extends Component {
     )
 
     const postList = []
-
-    for(var i=0; i<5; i++) {
+    for(var i=0; i<10; i++) {
       postList.push(
-        <Item key={i}>
-          <Item.Image src={Dummy}/>
-          <Item.Content>
-            <Item.Header as='a'>Watchmen</Item.Header>
-            <Item.Meta>
-              <span className='cinema'>IFC</span>
-            </Item.Meta>
-            <Item.Description>ahsdasldn</Item.Description>
-            <Item.Extra>
-              <Button primary floated='right'>
-                Update Post
-                <Icon name='right chevron' />
-              </Button>
-            </Item.Extra>
-          </Item.Content>
-        </Item>
+        <LazyLoad height={100} unmountIfInvisible={true} key={i}>
+          <Item>
+            <Item.Image src={Dummy}/>
+            <Item.Content>
+              <Item.Header as='a'>Watchmen</Item.Header>
+              <Item.Meta>
+                <span className='cinema'>IFC</span>
+              </Item.Meta>
+              <Item.Description>ahsdasldn</Item.Description>
+              <Item.Extra>
+                <Button primary floated='right'>
+                  Update Post
+                  <Icon name='right chevron' />
+                </Button>
+              </Item.Extra>
+            </Item.Content>
+          </Item>
+        </LazyLoad>
       )
     }
 
@@ -92,7 +93,7 @@ class Home extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={3} textAlign='center' verticalALign='middle'>
+            <Grid.Column width={3} textAlign='center' verticalAlign='middle'>
               <Button color='teal' content='Add new Post'/>
             </Grid.Column>
           </Grid.Row>
