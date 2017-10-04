@@ -35,7 +35,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <Routes />
-        <ScrollToTop style={ScrollStyle} showUnder={200} duration={2000}>
+        <ScrollToTop style={ScrollStyle} showUnder={200} duration={1000}>
           <Icon name='arrow circle up' size='huge' />
         </ScrollToTop>
       </div>
