@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
+import {Link} from 'react-router-dom';
 
 import { Header, Grid, Container, Item, Divider, Paragraph, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
 
@@ -43,6 +44,21 @@ class Home extends Component {
       </Grid.Column>
     )
 
+    const EditButton = (i) => (
+      <Link to={`/postupdate/${i}`}>
+        <Button basic color='brown' floated='left'>
+          <Icon name='edit' />
+          Update Post
+        </Button>
+      </Link>
+    )
+
+    const DetailsButton = (i) => (
+      <Link to={`/postdetail/${i}`}>
+        <Button basic color='orange' floated='right' icon='right chevron' labelPosition='right' content='See Details' />
+      </Link>
+    )
+
     const postList = []
     for(var i=0; i<10; i++) {
       postList.push(
@@ -50,16 +66,14 @@ class Home extends Component {
           <Item>
             <Item.Image src={Dummy}/>
             <Item.Content>
-              <Item.Header as='a'>Watchmen</Item.Header>
+              <Item.Header as='p'>Watchmen</Item.Header>
               <Item.Meta>
                 <span className='cinema'>IFC</span>
               </Item.Meta>
               <Item.Description>ahsdasldn</Item.Description>
               <Item.Extra>
-                <Button primary floated='right'>
-                  Update Post
-                  <Icon name='right chevron' />
-                </Button>
+                {EditButton(i)}
+                {DetailsButton(i)}
               </Item.Extra>
             </Item.Content>
           </Item>
