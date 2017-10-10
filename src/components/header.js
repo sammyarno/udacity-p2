@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+//import { connect } from 'react-redux';
 
 import {Menu} from 'semantic-ui-react';
 
 import {Link} from 'react-router-dom';
 
-export default class Header extends Component {
+// import { loadCategories } from '../actions/CatAction';
+// import { loadPosts } from '../actions/PostAction';
+
+class Header extends Component {
 
   state = {
     activeItem: 'home'
@@ -12,6 +16,11 @@ export default class Header extends Component {
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name })
+    // if(name === 'home') {
+    //   this.props.loadPosts()
+    // }else if(name === 'category') {
+    //   this.props.loadCat()
+    // }
   }
 
   render() {
@@ -57,3 +66,13 @@ export default class Header extends Component {
     )
   }
 }
+
+// function mapDispatchToProps (dispatch) {
+//   return {
+//     loadCat: () => dispatch(loadCategories()),
+//     loadPosts: () => dispatch(loadPosts())
+//   }
+// }
+//
+// export default connect(mapDispatchToProps)(Header)
+export default Header;

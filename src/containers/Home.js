@@ -1,46 +1,31 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-import { Header, Grid, Container, Item, Divider, Paragraph, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
+// react-redux
+import { connect } from 'react-redux';
+import { getDetailPost } from '../actions/PostAction';
+
+import { Header, Grid, Container, Item, Divider, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';
 
 class Home extends Component {
 
-  state = {
-    cats: []
-  }
-
-  componentDidMount() {
-    this.setState({
-      cats: [
-        {
-          id: 1,
-          name: 'Politic'
-        },{
-          id: 2,
-          name: 'Comedy'
-        },{
-          id: 3,
-          name: 'Movie'
-        },{
-          id: 4,
-          name: 'Education'
-        },{
-          id: 5,
-          name: 'Music'
-        },
-      ]
-    })
-  }
+  static propTypes = {
+    cats: PropTypes.array.isRequired,
+    //posts: PropTypes.object.isRequired,
+  };
 
   render() {
-    const {cats} = this.state
+    const {cats, posts, getPost} = this.props
+    console.log('render posts', posts)
+
     const catList = cats.map(cat =>
-      <Grid.Column key={cat.id} textAlign='center'>
-        <Label as='a' basic color='orange'>{cat.name}</Label>
+      <Grid.Column key={cat.name} textAlign='center'>
+        <Label as='a' basic color='orange' href={`${process.env.REACT_APP_BACKEND}/${cat.path}`}>{cat.name}</Label>
       </Grid.Column>
     )
 
@@ -55,31 +40,35 @@ class Home extends Component {
 
     const DetailsButton = (i) => (
       <Link to={`/postdetail/${i}`}>
-        <Button basic color='orange' floated='right' icon='right chevron' labelPosition='right' content='See Details' />
+        <Button basic color='orange' floated='right' icon='right chevron'
+                labelPosition='right' content='See Details' onClick={() => getPost(i)} />
       </Link>
     )
 
-    const postList = []
-    for(var i=0; i<10; i++) {
-      postList.push(
-        <LazyLoad height={100} unmountIfInvisible={true} key={i}>
-          <Item>
-            <Item.Image src={Dummy}/>
-            <Item.Content>
-              <Item.Header as='p'>Watchmen</Item.Header>
-              <Item.Meta>
-                <span className='cinema'>IFC</span>
-              </Item.Meta>
-              <Item.Description>ahsdasldn</Item.Description>
-              <Item.Extra>
-                {EditButton(i)}
-                {DetailsButton(i)}
-              </Item.Extra>
-            </Item.Content>
-          </Item>
-        </LazyLoad>
-      )
-    }
+    const asd = []
+    const postList = asd.map(post =>
+      <LazyLoad height={100} unmountIfInvisible={true} key={post.id}>
+        <Item>
+          <Item.Image src={Dummy}/>
+          <Item.Content>
+            <Item.Header as='p'>{post.title}</Item.Header>
+            <Item.Meta>
+              {post.voteScore > 0 ?
+                <Icon name='pointing up'> {post.voteScore} </Icon>
+                :
+                <Icon name='pointing down'> {post.voteScore} </Icon>
+              }
+              | <span className='cinema'> {post.category}</span>
+            </Item.Meta>
+            <Item.Description>{post.body}</Item.Description>
+            <Item.Extra>
+              {EditButton(post.id)}
+              {DetailsButton(post.id)}
+            </Item.Extra>
+          </Item.Content>
+        </Item>
+      </LazyLoad>
+    )
 
     const options = [
       { key: '0', text: 'Default', value: 'default' },
@@ -126,4 +115,18 @@ class Home extends Component {
   }
 }
 
-export default Home;
+function mapStateToProps (state, ownProps) {
+  console.log('mapstatetoprops', state)
+  return {
+    cats: state.categories,
+    posts: state.data.posts
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    getPost: (id) => dispatch(getDetailPost(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

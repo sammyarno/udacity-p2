@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+//import PropTypes from 'prop-types';
 
 class Detail extends Component {
 
-  state = {
-    key: ''
-  }
+  // static propTypes = {
+  //   post: PropTypes.object.isRequired
+  // };
 
-  constructor(props) {
-    super(props);
-    this.state = {key : props.match.params.id}
+  // state = {
+  //   key: ''
+  // }
+
+  // constructor(props) {
+  //   super(props);
+  //   //this.state = {key : props.match.params.id}
+  // }
+
+  componentDidMount () {
+    //const {key} = this.state
+    const {post} = this.props
+    console.log('POST', post)
   }
 
   render() {
-    const {key} = this.state;
+    //const {key} = this.state;
 
     return (
       <div>
         <center>
-          <h1>Detail | post id : {key}</h1>
+          <h1>Detail | post id : </h1>
         </center>
       </div>
     )
@@ -25,4 +37,11 @@ class Detail extends Component {
   }
 }
 
-export default Detail;
+function mapStateToProps (state, ownProps) {
+  console.log('mapstate', state.posts)
+  return {
+    post: state.posts.post
+  }
+}
+
+export default connect(mapStateToProps)(Detail)

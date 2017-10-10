@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
 
-import { Header, Grid, Container, Item, Divider, Paragraph, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
+import { Grid, Container, Item, Button, Icon, Dropdown } from 'semantic-ui-react';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';

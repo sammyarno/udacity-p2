@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Header from './components/header';
 import Routes from './components/routes';
-import { Switch } from 'react-router-dom';
 
 import ScrollToTop from 'react-scroll-up';
 import { Icon } from 'semantic-ui-react';
@@ -21,8 +20,7 @@ class App extends Component {
   // }
   //
   // componentDidMount() {
-  //   const url = `${process.env.REACT_APP_BACKEND}/categories`;
-  //   //console.log('fetching from url', url);
+  //   const url = `${process.env.REACT_APP_BACKEND}/posts/8xf0y6ziyjabvozdd253nd`;
   //   fetch(url, { headers: { 'Authorization': 'Sam' } } )
   //     .then( (res) => { return(res.text()) })
   //     .then((data) => {
