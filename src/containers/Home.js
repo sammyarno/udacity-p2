@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 // react-redux
 import { connect } from 'react-redux';
-import { getDetailPost } from '../actions/PostAction';
+import { getDetailPost, loadPostComments } from '../actions/PostAction';
 
 import { Header, Grid, Container, Item, Divider, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
 
@@ -16,12 +16,11 @@ class Home extends Component {
 
   static propTypes = {
     cats: PropTypes.array.isRequired,
-    //posts: PropTypes.object.isRequired,
+    posts: PropTypes.array.isRequired,
   };
 
   render() {
     const {cats, posts, getPost} = this.props
-    console.log('render posts', posts)
 
     const catList = cats.map(cat =>
       <Grid.Column key={cat.name} textAlign='center'>
@@ -45,8 +44,7 @@ class Home extends Component {
       </Link>
     )
 
-    const asd = []
-    const postList = asd.map(post =>
+    const postList = posts && posts.map(post =>
       <LazyLoad height={100} unmountIfInvisible={true} key={post.id}>
         <Item>
           <Item.Image src={Dummy}/>
@@ -54,9 +52,9 @@ class Home extends Component {
             <Item.Header as='p'>{post.title}</Item.Header>
             <Item.Meta>
               {post.voteScore > 0 ?
-                <Icon name='pointing up'> {post.voteScore} </Icon>
+                <Label icon='pointing up' content={`${post.voteScore}`} />
                 :
-                <Icon name='pointing down'> {post.voteScore} </Icon>
+                <Label icon='pointing down' content={`${post.voteScore}`} />
               }
               | <span className='cinema'> {post.category}</span>
             </Item.Meta>
@@ -82,7 +80,7 @@ class Home extends Component {
     return (
       <Container fluid>
         <br/> <br/>
-        <Grid centered>
+        <Grid centered stackable>
           <Grid.Row>
             <Header as='h1' disabled content='Categories' />
           </Grid.Row>
@@ -116,7 +114,6 @@ class Home extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
-  console.log('mapstatetoprops', state)
   return {
     cats: state.categories,
     posts: state.data.posts
@@ -126,6 +123,7 @@ function mapStateToProps (state, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
     getPost: (id) => dispatch(getDetailPost(id))
+                     .then(() => dispatch(loadPostComments(id)))
   }
 }
 

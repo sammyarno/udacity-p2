@@ -28,3 +28,17 @@ export function getDetailPost (id) {
 export function loadDetailPostSuccess (post) {
   return {type: types.LOAD_DETAIL_POST_SUCCESS, post};
 }
+
+export function loadPostComments (id) {
+  return function(dispatch) {
+    return PostApi.getPostComment(id).then(comments => {
+      dispatch(loadPostCommentsSuccess(comments));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function loadPostCommentsSuccess (comments) {
+  return {type: types.LOAD_POST_COMMENTS_SUCCESS, comments};
+}

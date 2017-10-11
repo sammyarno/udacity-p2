@@ -22,7 +22,6 @@ class PostApi {
 
   static getDetailPost(id) {
     const url = `${process.env.REACT_APP_BACKEND}/posts/${id}`;
-    console.log('getDetail', url)
     return fetch(url, { headers: { 'Authorization': 'Sam' } })
       .then(response => {
         return response.json();
@@ -31,6 +30,15 @@ class PostApi {
       });
   }
 
+  static getPostComment(id) {
+    const url = `${process.env.REACT_APP_BACKEND}/posts/${id}/comments`;
+    return fetch(url, { headers: { 'Authorization': 'Sam' } })
+      .then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+  }
 }
 
 export default PostApi;

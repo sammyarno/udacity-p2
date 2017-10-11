@@ -20,7 +20,7 @@ class App extends Component {
   // }
   //
   // componentDidMount() {
-  //   const url = `${process.env.REACT_APP_BACKEND}/posts/8xf0y6ziyjabvozdd253nd`;
+  //   const url = `${process.env.REACT_APP_BACKEND}/posts/8xf0y6ziyjabvozdd253nd/comments`;
   //   fetch(url, { headers: { 'Authorization': 'Sam' } } )
   //     .then( (res) => { return(res.text()) })
   //     .then((data) => {
@@ -29,6 +29,7 @@ class App extends Component {
   // }
 
   render() {
+    // console.log(this.state.backend)
     return (
       <div className="App">
         <Header />

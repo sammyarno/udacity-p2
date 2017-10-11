@@ -13,6 +13,11 @@ export default function postReducer(state = initialState.posts, action) {
         ...state,
         post: action.post
       }
+    case types.LOAD_POST_COMMENTS_SUCCESS:
+      return {
+        ...state,
+        comments: action.comments
+      }
     default:
       return state;
   }
