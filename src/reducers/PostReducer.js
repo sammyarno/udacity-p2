@@ -18,6 +18,22 @@ export default function postReducer(state = initialState.posts, action) {
         ...state,
         comments: action.comments
       }
+    case types.INSERT_POST_COMMENT_SUCCESS:
+      return {
+        ...state,
+        comments : [
+          ...state['comments'],
+          action.comment
+        ]
+      }
+    case types.DELETE_POST_COMMENT_SUCCESS:
+      return {
+        ...state,
+        comments : [
+          ...state['comments'],
+          [action.comment]: null
+        ]
+      }
     default:
       return state;
   }

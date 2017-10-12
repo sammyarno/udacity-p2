@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 
 // react-redux
 import { connect } from 'react-redux';
@@ -14,10 +14,10 @@ import Dummy from '../assets/images/dummy.jpg';
 
 class Home extends Component {
 
-  static propTypes = {
-    cats: PropTypes.array.isRequired,
-    posts: PropTypes.array.isRequired,
-  };
+  // static propTypes = {
+  //   cats: PropTypes.array.isRequired,
+  //   posts: PropTypes.array.isRequired,
+  // };
 
   render() {
     const {cats, posts, getPost} = this.props
