@@ -21,6 +21,15 @@ export default function postReducer(state = initialState.posts, action) {
           action.post
         ]
       }
+      case types.DELETE_POST_SUCCESS:
+        console.log('delete post success', action.post);
+        return {
+          ...state,
+          posts: [
+            ...state['posts'],
+            [action.post]: null
+          ]
+        }
     case types.LOAD_POST_COMMENTS_SUCCESS:
       return {
         ...state,

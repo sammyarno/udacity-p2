@@ -10,6 +10,16 @@ class PostApi {
       });
   }
 
+  static getAllPosts() {
+    const url = `${process.env.REACT_APP_BACKEND}/posts`;
+    return fetch(url, { headers: { 'Authorization': 'Sam' } })
+      .then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+  }
+
   static insertPost(data) {
     const url = `${process.env.REACT_APP_BACKEND}/posts`;
     return fetch(url, {
@@ -28,27 +38,9 @@ class PostApi {
       });
   }
 
-  static deletePost(data) {
-    const url = `${process.env.REACT_APP_BACKEND}/posts/${data.id}`;
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Sam',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        return response.json();
-      }).catch(error => {
-        return error;
-      });
-  }
-
-  static getAllPosts() {
-    const url = `${process.env.REACT_APP_BACKEND}/posts`;
-    return fetch(url, { headers: { 'Authorization': 'Sam' } })
+  static deletePost(id) {
+    const url = `${process.env.REACT_APP_BACKEND}/posts/${id}`;
+    return fetch(url, { method: 'DELETE', headers: { 'Authorization': 'Sam' } })
       .then(response => {
         return response.json();
       }).catch(error => {

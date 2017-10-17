@@ -29,9 +29,9 @@ export function insertPostSuccess (post) {
   return {type: types.INSERT_POST_SUCCESS, post};
 }
 
-export function deletePost (data) {
+export function deletePost (id) {
   return function(dispatch) {
-    return PostApi.deletePost(data).then(post => {
+    return PostApi.deletePost(id).then(post => {
       dispatch(deletePostSuccess(post));
     }).catch(error => {
       throw(error);

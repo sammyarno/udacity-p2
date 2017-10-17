@@ -11,7 +11,7 @@ import LoadingFull from '../components/LoadingFull';
 import { connect } from 'react-redux';
 import { getDetailPost, loadPostComments, insertPost } from '../actions/PostAction';
 
-import { Header, Grid, Container, Item, Divider, Button, Icon, Label, Modal, Form } from 'semantic-ui-react';
+import { Header, Grid, Container, Item, Divider, Button, Label, Modal, Form } from 'semantic-ui-react';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';
