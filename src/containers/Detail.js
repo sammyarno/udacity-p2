@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv4 from 'uuid/v4';
+import sortBy  from 'sort-by';
 // import PropTypes from 'prop-types';
 
 import LoadingFull from '../components/LoadingFull';
@@ -50,7 +51,7 @@ class Detail extends Component {
 
   render() {
     const {post, comments, deleteComment} = this.props
-    const {modalOpen, key, commentid, loading} = this.state
+    const {modalOpen, key, commentid, loading, sortby} = this.state
 
     const postDetail = post && (
       <div>
@@ -63,10 +64,6 @@ class Detail extends Component {
             <Grid.Column>{post.author}</Grid.Column>
           </Grid.Row>
           <Grid.Row width={6} columns={2}>
-            <Grid.Column textAlign='right'><b>Title</b></Grid.Column>
-            <Grid.Column>{post.title}</Grid.Column>
-          </Grid.Row>
-          <Grid.Row width={6} columns={2}>
             <Grid.Column textAlign='right'><b>Timestamp</b></Grid.Column>
             <Grid.Column>{post.timestamp}</Grid.Column>
           </Grid.Row>
@@ -77,6 +74,11 @@ class Detail extends Component {
           <Grid.Row width={6} columns={2}>
             <Grid.Column textAlign='right'><b>Vote Score</b></Grid.Column>
             <Grid.Column>{post.voteScore}</Grid.Column>
+          </Grid.Row>
+          <Grid.Row width={6} column={1}>
+            <Grid.Column textAlign='center'>
+              <b>Body</b>
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row width={6} columns={1}>
             <Grid.Column textAlign='center'>
@@ -91,7 +93,7 @@ class Detail extends Component {
       <Grid.Row centered>
         <Grid.Column width={10}>
           <Item.Group divided>
-            {comments.map(comment => (
+            {comments.sort(sortBy('-voteScore')).map(comment => (
               <Item key={comment.id}>
                 <Item.Content>
                   <Item.Header as='a'>{comment.author}</Item.Header>
