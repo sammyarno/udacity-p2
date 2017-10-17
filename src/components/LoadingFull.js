@@ -22,7 +22,7 @@ export default class LoadingFull extends Component {
                     color = {'#f66565'}
                     loading = {loading}
                     size = {15}
-                    margin ={10}
+                    margin = {10}
                   />
                 </Grid.Column>
               </Grid.Row>

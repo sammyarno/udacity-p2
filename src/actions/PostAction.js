@@ -15,6 +15,34 @@ export function loadPostsSuccess (posts) {
   return {type: types.LOAD_POSTS_SUCCESS, posts};
 }
 
+export function insertPost (data) {
+  return function(dispatch) {
+    return PostApi.insertPost(data).then(post => {
+      dispatch(insertPostSuccess(post));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function insertPostSuccess (post) {
+  return {type: types.INSERT_POST_SUCCESS, post};
+}
+
+export function deletePost (data) {
+  return function(dispatch) {
+    return PostApi.deletePost(data).then(post => {
+      dispatch(deletePostSuccess(post));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function deletePostSuccess (post) {
+  return {type: types.DELETE_POST_SUCCESS, post};
+}
+
 export function getDetailPost (id) {
   return function(dispatch) {
     return PostApi.getDetailPost(id).then(post => {

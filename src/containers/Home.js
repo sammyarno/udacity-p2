@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
+import uuidv4 from 'uuid/v4';
 //import PropTypes from 'prop-types';
+
+import LoadingFull from '../components/LoadingFull';
 
 // react-redux
 import { connect } from 'react-redux';
-import { getDetailPost, loadPostComments } from '../actions/PostAction';
+import { getDetailPost, loadPostComments, insertPost } from '../actions/PostAction';
 
-import { Header, Grid, Container, Item, Divider, Button, Icon, Label, Dropdown } from 'semantic-ui-react';
+import { Header, Grid, Container, Item, Divider, Button, Icon, Label, Modal, Form } from 'semantic-ui-react';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';
@@ -19,8 +22,90 @@ class Home extends Component {
   //   posts: PropTypes.array.isRequired,
   // };
 
+  state = {
+    modalOpen: false,
+    loading: false
+  }
+
+  modalOpen = () => {
+    this.setState({
+      modalOpen: true,
+      postid: uuidv4()
+    })
+  }
+  modalClose = () => this.setState({ modalOpen: false })
+
+  submitInsert = (data) => {
+    this.setState({ loading: true })
+    const post = {
+      id: data.postid.value,
+      timestamp: data.timestamp.value,
+      title: data.title.value,
+      body: data.body.value,
+      author: data.author.value,
+      category: this.state.cat
+    }
+    this.props.addPost(post)
+
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+      this.modalClose()
+    }, 3000)
+  }
+
+  handleSortChange = (e, {value}) => {
+    this.setState({ sort: value });
+  }
+
+  handleCatChange = (e, {value}) => {
+    this.setState({ cat: value });
+  }
+
   render() {
     const {cats, posts, getPost} = this.props
+    const {modalOpen, postid, loading} = this.state
+
+    const catOptions = [
+      { key: '0', text: 'React', value: 'react' },
+      { key: '1', text: 'Redux', value: 'redux' },
+      { key: '2', text: 'Udacity', value: 'udacity' },
+    ]
+    const insertModal =
+      <Modal open={modalOpen} onClose={this.modalClose}>
+        <Modal.Header>Insert new Post</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column>
+                  <Form id='insert-post-form' onSubmit={data => this.submitInsert(data.target)}>
+                    <Form.Group widths='equal'>
+                      <Form.Input name='postid' label='PostID' value={postid} readOnly />
+                      <Form.Input name='timestamp' label='Timestamp' value={Date.now()} readOnly />
+                    </Form.Group>
+                    <Divider />
+                    <Form.Group>
+                      <Form.Input name='title' label='Title' placeholder='Title' width={8} required/>
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Input name='author' label='Author' placeholder='Author' width={10} required/>
+                    </Form.Group>
+                    <Form.Group widths='equal'>
+                      <Form.TextArea name='body' label='Body' placeholder='What is your post about..' rows={2} autoHeight required/>
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Select name='category' label='Category' placeholder='Post Category' fluid selection options={catOptions} width={6} onChange={this.handleCatChange} required/>
+                    </Form.Group>
+                    <Button type='submit' floated='right' color='teal' content='Add new Post' form='insert-post-form'/>
+                  </Form>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
 
     const catList = cats.map(cat =>
       <Grid.Column key={cat.name} textAlign='center'>
@@ -75,11 +160,12 @@ class Home extends Component {
       { key: '3', text: 'Oldest', value: 'oldest' },
       { key: '4', text: 'Alphabethical', value: 'alphabeth' },
     ]
-    const dropDownSorting = <Dropdown placeholder='Sort By' fluid selection options={options} />
+    const dropDownSorting = <Form.Select name='sortby' placeholder='Sort By' fluid selection options={options} onChange={this.handleSortChange} required/>
 
     return (
       <Container fluid>
         <br/> <br/>
+        {insertModal}
         <Grid centered stackable>
           <Grid.Row>
             <Header as='h1' disabled content='Categories' />
@@ -95,7 +181,7 @@ class Home extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={3} textAlign='center' verticalAlign='middle'>
-              <Button color='teal' content='Add new Post'/>
+              <Button color='teal' content='Add new Post' onClick={this.modalOpen}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row></Grid.Row>
@@ -107,6 +193,9 @@ class Home extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <LoadingFull
+          loading = {loading}
+        />
       </Container>
     )
 
@@ -123,7 +212,8 @@ function mapStateToProps (state, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
     getPost: (id) => dispatch(getDetailPost(id))
-                     .then(() => dispatch(loadPostComments(id)))
+                     .then(() => dispatch(loadPostComments(id))),
+    addPost: (data) => dispatch(insertPost(data))
   }
 }
 
