@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
 import uuidv4 from 'uuid/v4';
+import sortBy  from 'sort-by';
 //import PropTypes from 'prop-types';
 
 import LoadingFull from '../components/LoadingFull';
@@ -24,7 +25,8 @@ class Home extends Component {
 
   state = {
     modalOpen: false,
-    loading: false
+    loading: false,
+    sortby: 'voteScore'
   }
 
   modalOpen = () => {
@@ -56,7 +58,7 @@ class Home extends Component {
   }
 
   handleSortChange = (e, {value}) => {
-    this.setState({ sort: value });
+    this.setState({ sortby: value });
   }
 
   handleCatChange = (e, {value}) => {
@@ -65,7 +67,7 @@ class Home extends Component {
 
   render() {
     const {cats, posts, getPost} = this.props
-    const {modalOpen, postid, loading} = this.state
+    const {modalOpen, postid, loading, sortby} = this.state
 
     const catOptions = [
       { key: '0', text: 'React', value: 'react' },
@@ -129,7 +131,7 @@ class Home extends Component {
       </Link>
     )
 
-    const postList = posts && posts.map(post =>
+    const postList = posts && posts.sort(sortBy(sortby)).map(post =>
       <LazyLoad height={100} unmountIfInvisible={true} key={post.id}>
         <Item>
           <Item.Image src={Dummy}/>
@@ -154,11 +156,11 @@ class Home extends Component {
     )
 
     const options = [
-      { key: '0', text: 'Default', value: 'default' },
-      { key: '1', text: 'Top Vote', value: 'vote' },
-      { key: '2', text: 'Newest', value: 'newest' },
-      { key: '3', text: 'Oldest', value: 'oldest' },
-      { key: '4', text: 'Alphabethical', value: 'alphabeth' },
+      { key: '0', text: 'Top Vote', value: '-voteScore' },
+      { key: '1', text: 'Low Vote', value: 'voteScore' },
+      { key: '2', text: 'Newest', value: '-timestamp' },
+      { key: '3', text: 'Oldest', value: 'timestamp' },
+      { key: '4', text: 'Alphabethical', value: 'title' },
     ]
     const dropDownSorting = <Form.Select name='sortby' placeholder='Sort By' fluid selection options={options} onChange={this.handleSortChange} required/>
 
