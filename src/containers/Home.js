@@ -115,15 +115,6 @@ class Home extends Component {
       </Grid.Column>
     )
 
-    const EditButton = (i) => (
-      <Link to={`/postupdate/${i}`}>
-        <Button basic color='brown' floated='left'>
-          <Icon name='edit' />
-          Update Post
-        </Button>
-      </Link>
-    )
-
     const DetailsButton = (i) => (
       <Link to={`/postdetail/${i}`}>
         <Button basic color='orange' floated='right' icon='right chevron'
@@ -147,7 +138,6 @@ class Home extends Component {
             </Item.Meta>
             <Item.Description>{post.body}</Item.Description>
             <Item.Extra>
-              {EditButton(post.id)}
               {DetailsButton(post.id)}
             </Item.Extra>
           </Item.Content>
