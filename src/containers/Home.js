@@ -26,7 +26,7 @@ class Home extends Component {
   state = {
     modalOpen: false,
     loading: false,
-    sortby: 'voteScore'
+    sortby: '-voteScore'
   }
 
   modalOpen = () => {
