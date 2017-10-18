@@ -29,6 +29,24 @@ export function insertPostSuccess (post) {
   return {type: types.INSERT_POST_SUCCESS, post};
 }
 
+export function updatePost (data) {
+  return function(dispatch) {
+    const newData = {
+      title: data.title.value,
+      body: data.body.value,
+    }
+    return PostApi.updatePost(data.postid.value, newData).then(post => {
+      dispatch(updatePostSuccess(post));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function updatePostSuccess (post) {
+  return {type: types.UPDATE_POST_SUCCESS, post};
+}
+
 export function deletePost (id) {
   return function(dispatch) {
     return PostApi.deletePost(id).then(post => {
@@ -104,4 +122,22 @@ export function deletePostComment (id) {
 
 export function deletePostCommentSuccess (comment) {
   return {type: types.DELETE_POST_COMMENT_SUCCESS, comment};
+}
+
+export function updatePostComment (data) {
+  return function(dispatch) {
+    const newData = {
+      timestamp: data.timestamp.value,
+      body: data.body.value,
+    }
+    return PostApi.updatePostComment(data.commentid.value, newData).then(comment => {
+      dispatch(updatePostCommentSuccess(comment));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function updatePostCommentSuccess (comment) {
+  return {type: types.UPDATE_POST_COMMENT_SUCCESS, comment};
 }

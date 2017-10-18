@@ -38,6 +38,24 @@ class PostApi {
       });
   }
 
+  static updatePost(id, data) {
+    const url = `${process.env.REACT_APP_BACKEND}/posts/${id}`;
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Sam',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+  }
+
   static deletePost(id) {
     const url = `${process.env.REACT_APP_BACKEND}/posts/${id}`;
     return fetch(url, { method: 'DELETE', headers: { 'Authorization': 'Sam' } })
@@ -95,6 +113,25 @@ class PostApi {
         return error;
       });
   }
+
+  static updatePostComment(id, data) {
+    const url = `${process.env.REACT_APP_BACKEND}/comments/${id}`;
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Sam',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+  }
+
 }
 
 export default PostApi;
