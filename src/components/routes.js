@@ -5,7 +5,6 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from '../containers/Home';
 import Category from '../containers/Category';
 import Detail from '../containers/Detail';
-import Update from '../containers/Update';
 import NotFound from '../containers/NotFound';
 
 const Routes = () => {

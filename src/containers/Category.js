@@ -3,7 +3,7 @@ import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
 import sortBy  from 'sort-by';
 
-import { Grid, Container, Item, Button, Icon, Dropdown, Label, Divider } from 'semantic-ui-react';
+import { Grid, Container, Item, Button, Dropdown, Label, Divider } from 'semantic-ui-react';
 
 // react-redux
 import { connect } from 'react-redux';
