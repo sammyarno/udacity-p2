@@ -22,7 +22,6 @@ export default function postReducer(state = initialState.posts, action) {
         ]
       }
     case types.UPDATE_POST_SUCCESS:
-      console.log(action)
       return {
         ...state,
         post: action.post,
@@ -36,7 +35,6 @@ export default function postReducer(state = initialState.posts, action) {
         ]
       }
     case types.DELETE_POST_SUCCESS:
-      console.log('delete post success', action.post);
       return {
         ...state,
         posts: [

@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazyload';
+import {Link} from 'react-router-dom';
+import sortBy  from 'sort-by';
 
-import { Grid, Container, Item, Button, Icon, Dropdown } from 'semantic-ui-react';
+import { Grid, Container, Item, Button, Icon, Dropdown, Label, Divider } from 'semantic-ui-react';
+
+// react-redux
+import { connect } from 'react-redux';
+import { getDetailPost, loadPostComments, insertPost } from '../actions/PostAction';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';
@@ -9,78 +15,105 @@ import Dummy from '../assets/images/dummy.jpg';
 class Category extends Component {
 
   state = {
-    cats: []
+    cats: [],
+    filtercat: 'default',
+    sortby: '-voteScore'
   }
 
-  componentDidMount() {
-    this.setState({
-      cats: [
-        {
-          id: 0,
-          text: 'All Category',
-          value: 'All Category'
-        },
-        {
-          id: 1,
-          text: 'Politic',
-          value: 'politic'
-        },{
-          id: 2,
-          text: 'Comedy',
-          value: 'comedy'
-        },{
-          id: 3,
-          text: 'Movie',
-          value: 'movie'
-        },{
-          id: 4,
-          text: 'Education',
-          value: 'education'
-        },{
-          id: 5,
-          text: 'Music',
-          value: 'music'
-        },
-      ]
-    })
+  constructor(props) {
+    super(props)
+    if(props.match.params.name) {
+      this.state = {filtercat: props.match.params.name}
+    }
+  }
+
+  handleSortChange = (e, {value}) => {
+    this.setState({ sortby: value });
+  }
+
+  handleCatChange = (e, {value}) => {
+    this.setState({ filtercat: value });
   }
 
   render() {
-    const {cats} = this.state
-    const dropDownCategories = <Dropdown placeholder='Select Category' fluid selection options={cats} />
+    const {cats, posts, getPost} = this.props
+    const {sortby, filtercat} = this.state
 
-    const postList = []
-    for(var i=0; i<10; i++) {
-      postList.push(
-        <LazyLoad height={100} unmountIfInvisible={true} key={i}>
-          <Item>
-            <Item.Image src={Dummy}/>
-            <Item.Content>
-              <Item.Header as='a'>Watchmen</Item.Header>
-              <Item.Meta>
-                <span className='cinema'>IFC</span>
-              </Item.Meta>
-              <Item.Description>ahsdasldn</Item.Description>
-              <Item.Extra>
-                <Button primary floated='right'>
-                  Update Post
-                  <Icon name='right chevron' />
-                </Button>
-              </Item.Extra>
-            </Item.Content>
-          </Item>
-        </LazyLoad>
-      )
-    }
+    const temp = [
+      {
+        text: 'All Categories',
+        value: 'default'
+      }
+    ]
+    const data = cats && temp.concat(cats.map(cat => {
+        return {
+          text: cat.name,
+          value: cat.name
+        }
+      })
+    )
+    const dropDownCategories = (
+      <Dropdown
+        placeholder='Select Category'
+        defaultValue={filtercat}
+        fluid
+        selection
+        options={data}
+        onChange={this.handleCatChange}
+      />
+    )
+
+    const DetailsButton = (i) => (
+      <Link to={`/postdetail/${i}`}>
+        <Button basic color='orange' floated='right' icon='right chevron'
+                labelPosition='right' content='See Details' onClick={() => getPost(i)} />
+      </Link>
+    )
+    const postList = posts && posts.sort(sortBy(sortby)).filter(post => {
+      if(filtercat === 'default') {
+        return post
+      }else {
+        return post.category === filtercat
+      }
+    }).map(post =>
+      <LazyLoad height={100} unmountIfInvisible={true} key={post.id}>
+        <Item>
+          <Item.Image src={Dummy}/>
+          <Item.Content>
+            <Item.Header as='p'>{post.title}</Item.Header>
+            <Item.Meta>
+              {post.voteScore > 0 ?
+                <Label icon='pointing up' content={`${post.voteScore}`} />
+                :
+                <Label icon='pointing down' content={`${post.voteScore}`} />
+              }
+              | <span className='cinema'> {post.category}</span>
+            </Item.Meta>
+            <Item.Description>{post.body}</Item.Description>
+            <Item.Extra>
+              {DetailsButton(post.id)}
+            </Item.Extra>
+          </Item.Content>
+        </Item>
+      </LazyLoad>
+    )
 
     const options = [
-      { key: '0', text: 'Default', value: 'default' },
-      { key: '1', text: 'Top Vote', value: 'vote' },
-      { key: '2', text: 'Newest', value: 'newest' },
-      { key: '3', text: 'Oldest', value: 'oldest' },
-      { key: '4', text: 'Alphabethical', value: 'alphabeth' },
+      { key: '0', text: 'Top Vote', value: '-voteScore' },
+      { key: '1', text: 'Low Vote', value: 'voteScore' },
+      { key: '2', text: 'Newest', value: '-timestamp' },
+      { key: '3', text: 'Oldest', value: 'timestamp' },
+      { key: '4', text: 'Alphabethical', value: 'title' },
     ]
-    const dropDownSorting = <Dropdown placeholder='Sort By' fluid selection options={options} />
+    const dropDownSorting = (
+      <Dropdown
+        placeholder='Sort By'
+        fluid
+        selection
+        options={options}
+        onChange={this.handleSortChange}
+      />
+    )
 
     return (
       <Container fluid>
@@ -95,8 +128,8 @@ class Category extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={3} textAlign='center' verticalALign='middle'>
-              <Button color='teal' content='Filter'/>
+            <Grid.Column width={5} textAlign='center' verticalAlign='middle'>
+              <Divider />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row></Grid.Row>
@@ -114,4 +147,19 @@ class Category extends Component {
   }
 }
 
-export default Category;
+function mapStateToProps (state, ownProps) {
+  return {
+    cats: state.categories,
+    posts: state.data.posts
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    getPost: (id) => dispatch(getDetailPost(id))
+                     .then(() => dispatch(loadPostComments(id))),
+    addPost: (data) => dispatch(insertPost(data))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

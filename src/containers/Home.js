@@ -110,8 +110,10 @@ class Home extends Component {
       </Modal>
 
     const catList = cats.map(cat =>
-      <Grid.Column key={cat.name} textAlign='center'>
-        <Label as='a' basic color='orange' href={`${process.env.REACT_APP_BACKEND}/${cat.path}`}>{cat.name}</Label>
+      <Grid.Column key={cat.name} width={1}>
+        <Link to={`category/${cat.name}`}>
+          <Button basic color='orange' content={cat.name} />
+        </Link>
       </Grid.Column>
     )
 
@@ -165,7 +167,11 @@ class Home extends Component {
           <Grid.Row>
             {catList}
           </Grid.Row>
-          <Divider />
+          <Grid.Row>
+            <Grid.Column width={5} textAlign='center' verticalAlign='middle'>
+              <Divider />
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Row>
             <Grid.Column width={3} textAlign='center' verticalAlign='middle'>
               {dropDownSorting}
