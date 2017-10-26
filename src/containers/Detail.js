@@ -5,10 +5,11 @@ import sortBy  from 'sort-by';
 // import PropTypes from 'prop-types';
 
 import LoadingFull from '../components/LoadingFull';
+import VoteButton from '../components/VoteButton';
 
 import { Container, Grid, Header, Item, Label, Divider, Button, Modal, Form } from 'semantic-ui-react';
 
-import { deletePostComment, insertPostComment, updatePostComment, deletePost, updatePost } from '../actions/PostAction';
+import { deletePostComment, insertPostComment, updatePostComment, deletePost, updatePost, votePost } from '../actions/PostAction';
 
 class Detail extends Component {
 
@@ -103,6 +104,16 @@ class Detail extends Component {
     }, 3000)
   }
 
+  votePost = (post, action) => {
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.props.votePost(post, action)
+      this.setState({
+        loading: false
+      })
+    }, 500)
+  }
+
   render() {
 
     const {post, comments} = this.props
@@ -122,6 +133,12 @@ class Detail extends Component {
                 <Button positive content='Edit' onClick={() => this.modalPostOpen(post)}/>
               </Button.Group>
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row textAlign='center'>
+            <VoteButton
+              data = {post}
+              votePost = {(data, action) => this.votePost(data, action)}
+            />
           </Grid.Row>
           <Grid.Row width={6} columns={2}>
             <Grid.Column textAlign='right'><b>ID</b></Grid.Column>
@@ -324,7 +341,8 @@ function mapDispatchToProps (dispatch) {
     updatePost: (data) => dispatch(updatePost(data)),
     deleteComment: (id) => dispatch(deletePostComment(id)),
     insertComment: (data) => dispatch(insertPostComment(data)),
-    updateComment: (data) => dispatch(updatePostComment(data))
+    updateComment: (data) => dispatch(updatePostComment(data)),
+    votePost: (data, action) => dispatch(votePost(data, action))
   }
 }
 

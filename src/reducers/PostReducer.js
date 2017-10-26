@@ -37,6 +37,7 @@ export default function postReducer(state = initialState.posts, action) {
     case types.VOTE_POST_SUCCESS:
       return {
         ...state,
+        post: action.post,
         posts: [
           ...state['posts'].map(data => {
             if(data.id === action.post.id) {

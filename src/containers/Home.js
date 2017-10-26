@@ -67,13 +67,9 @@ class Home extends Component {
   }
 
   votePost = (post, action) => {
-    console.log("post id", post.id)
-    console.log("action", action)
-
-    this.props.votePost(post, action)
-
     this.setState({ loading: true })
     setTimeout(() => {
+      this.props.votePost(post, action)
       this.setState({
         loading: false
       })

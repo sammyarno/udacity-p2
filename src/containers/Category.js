@@ -3,13 +3,14 @@ import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
 import sortBy  from 'sort-by';
 
+import LoadingFull from '../components/LoadingFull';
 import VoteButton from '../components/VoteButton';
 
 import { Grid, Container, Item, Button, Dropdown, Label, Divider } from 'semantic-ui-react';
 
 // react-redux
 import { connect } from 'react-redux';
-import { getDetailPost, loadPostComments, insertPost } from '../actions/PostAction';
+import { getDetailPost, loadPostComments, insertPost, votePost } from '../actions/PostAction';
 
 // import dummy image
 import Dummy from '../assets/images/dummy.jpg';
@@ -19,7 +20,8 @@ class Category extends Component {
   state = {
     cats: [],
     filtercat: 'default',
-    sortby: '-voteScore'
+    sortby: '-voteScore',
+    loading: false
   }
 
   constructor(props) {
@@ -38,13 +40,9 @@ class Category extends Component {
   }
 
   votePost = (post, action) => {
-    console.log("post id", post.id)
-    console.log("action", action)
-
-    this.props.votePost(post, action)
-
     this.setState({ loading: true })
     setTimeout(() => {
+      this.props.votePost(post, action)
       this.setState({
         loading: false
       })
@@ -53,7 +51,7 @@ class Category extends Component {
 
   render() {
     const {cats, posts, getPost} = this.props
-    const {sortby, filtercat} = this.state
+    const {sortby, filtercat, loading} = this.state
 
     const temp = [
       {
@@ -161,6 +159,9 @@ class Category extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <LoadingFull
+          loading = {loading}
+        />
       </Container>
     )
 
@@ -178,7 +179,8 @@ function mapDispatchToProps (dispatch) {
   return {
     getPost: (id) => dispatch(getDetailPost(id))
                      .then(() => dispatch(loadPostComments(id))),
-    addPost: (data) => dispatch(insertPost(data))
+    addPost: (data) => dispatch(insertPost(data)),
+    votePost: (data, action) => dispatch(votePost(data, action))
   }
 }
 
