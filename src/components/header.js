@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import {Menu} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+
+import { changeMenu } from '../actions/MenuAction';
 
 class Header extends Component {
 
@@ -10,11 +13,23 @@ class Header extends Component {
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name })
+    this.props.menuChanger(name)
+  }
+
+  checkMenu = () => {
+    const {activeItem} = this.state
+    const {menu} = this.props
+
+    if (menu) {
+      if (activeItem !== menu) {
+        return menu
+      }
+    }
+
+    return activeItem
   }
 
   render() {
-    const {activeItem} = this.state
-
     return (
       <div className="header">
         <Menu
@@ -25,7 +40,7 @@ class Header extends Component {
           <Menu.Item
              key='home'
              name='home'
-             active={activeItem === 'home'}
+             active={this.checkMenu() === 'home'}
              onClick={this.handleItemClick}
              as={Link}
              to='/'
@@ -33,7 +48,7 @@ class Header extends Component {
            <Menu.Item
               key='category'
               name='category'
-              active={activeItem === 'category'}
+              active={this.checkMenu() === 'category'}
               onClick={this.handleItemClick}
               as={Link}
               to='/category'
@@ -44,4 +59,16 @@ class Header extends Component {
   }
 }
 
-export default Header
+function mapStateToProps (state, ownProps) {
+  return {
+    menu: state.menu,
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    menuChanger: (menu) => dispatch(changeMenu(menu))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

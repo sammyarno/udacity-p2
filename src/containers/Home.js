@@ -11,6 +11,7 @@ import VoteButton from '../components/VoteButton';
 // react-redux
 import { connect } from 'react-redux';
 import { getDetailPost, loadPostComments, insertPost, votePost } from '../actions/PostAction';
+import { changeMenu } from '../actions/MenuAction';
 
 import { Header, Grid, Container, Item, Divider, Button, Label, Modal, Form } from 'semantic-ui-react';
 
@@ -123,7 +124,12 @@ class Home extends Component {
     const catList = cats.map(cat =>
       <Grid.Column key={cat.name} width={1}>
         <Link to={`/${cat.name}/`}>
-          <Button basic color='orange' content={cat.name} />
+          <Button
+            basic
+            color='orange'
+            onClick={() => this.props.menuChanger('category')}
+            content={cat.name}
+          />
         </Link>
       </Grid.Column>
     )
@@ -227,7 +233,8 @@ function mapDispatchToProps (dispatch) {
     getPost: (id) => dispatch(getDetailPost(id))
                      .then(() => dispatch(loadPostComments(id))),
     addPost: (data) => dispatch(insertPost(data)),
-    votePost: (data, action) => dispatch(votePost(data, action))
+    votePost: (data, action) => dispatch(votePost(data, action)),
+    menuChanger: (menu) => dispatch(changeMenu(menu))
   }
 }
 
