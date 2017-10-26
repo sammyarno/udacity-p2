@@ -3,6 +3,8 @@ import LazyLoad from 'react-lazyload';
 import {Link} from 'react-router-dom';
 import sortBy  from 'sort-by';
 
+import VoteButton from '../components/VoteButton';
+
 import { Grid, Container, Item, Button, Dropdown, Label, Divider } from 'semantic-ui-react';
 
 // react-redux
@@ -33,6 +35,20 @@ class Category extends Component {
 
   handleCatChange = (e, {value}) => {
     this.setState({ filtercat: value });
+  }
+
+  votePost = (post, action) => {
+    console.log("post id", post.id)
+    console.log("action", action)
+
+    this.props.votePost(post, action)
+
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 500)
   }
 
   render() {
@@ -91,6 +107,10 @@ class Category extends Component {
             </Item.Meta>
             <Item.Description>{post.body}</Item.Description>
             <Item.Extra>
+              <VoteButton
+                data = {post}
+                votePost = {(data, action) => this.votePost(data, action)}
+              />
               {DetailsButton(post.id)}
             </Item.Extra>
           </Item.Content>

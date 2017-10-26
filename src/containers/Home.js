@@ -77,7 +77,7 @@ class Home extends Component {
       this.setState({
         loading: false
       })
-    }, 1000)
+    }, 500)
   }
 
   render() {
