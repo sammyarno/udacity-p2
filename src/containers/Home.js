@@ -117,10 +117,10 @@ class Home extends Component {
       </Grid.Column>
     )
 
-    const DetailsButton = (i) => (
-      <Link to={`/postdetail/${i}`}>
+    const DetailsButton = (post) => (
+      <Link to={`/${post.category}/${post.id}`}>
         <Button basic color='orange' floated='right' icon='right chevron'
-                labelPosition='right' content='See Details' onClick={() => getPost(i)} />
+                labelPosition='right' content='See Details' onClick={() => getPost(post.id)} />
       </Link>
     )
 
@@ -129,7 +129,7 @@ class Home extends Component {
         <Item>
           <Item.Image src={Dummy}/>
           <Item.Content>
-            <Item.Header as='p'>{post.title}</Item.Header>
+            <Item.Header as='p'><small>{post.author}</small> - {post.title}</Item.Header>
             <Item.Meta>
               {post.voteScore > 0 ?
                 <Label icon='pointing up' content={`${post.voteScore}`} />
@@ -140,7 +140,7 @@ class Home extends Component {
             </Item.Meta>
             <Item.Description>{post.body}</Item.Description>
             <Item.Extra>
-              {DetailsButton(post.id)}
+              {DetailsButton(post)}
             </Item.Extra>
           </Item.Content>
         </Item>
