@@ -26,8 +26,8 @@ class Category extends Component {
 
   constructor(props) {
     super(props)
-    if(props.match.params.name) {
-      this.state = {filtercat: props.match.params.name}
+    if(props.match.params.category) {
+      this.state = {filtercat: props.match.params.category}
     }
   }
 

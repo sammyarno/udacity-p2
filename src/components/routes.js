@@ -12,7 +12,7 @@ const Routes = () => {
     <Switch>
       <Route exact path='/' component={Home} />
       <Route exact path='/category' component={Category} />
-      <Route exact path='/category/:name' component={Category} />
+      <Route exact path='/:category' component={Category} />
       <Route exact path='/:category/:id' component={Detail} />
       <Route exact path='/404' component={NotFound} />
       <Redirect to="/404" />

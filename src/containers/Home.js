@@ -122,7 +122,7 @@ class Home extends Component {
 
     const catList = cats.map(cat =>
       <Grid.Column key={cat.name} width={1}>
-        <Link to={`category/${cat.name}`}>
+        <Link to={`/${cat.name}/`}>
           <Button basic color='orange' content={cat.name} />
         </Link>
       </Grid.Column>
