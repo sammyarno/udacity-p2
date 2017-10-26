@@ -141,3 +141,20 @@ export function updatePostComment (data) {
 export function updatePostCommentSuccess (comment) {
   return {type: types.UPDATE_POST_COMMENT_SUCCESS, comment};
 }
+
+export function votePost (data, action) {
+  return function(dispatch) {
+    const option = {
+      option: action
+    }
+    return PostApi.votePost(data.id, option).then(post => {
+      dispatch(votePostSuccess(post));
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}
+
+export function votePostSuccess (post) {
+  return {type: types.VOTE_POST_SUCCESS, post};
+}

@@ -132,6 +132,24 @@ class PostApi {
       });
   }
 
+  static votePost(id, data) {
+    const url = `${process.env.REACT_APP_BACKEND}/posts/${id}`;
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Sam',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+  }
+
 }
 
 export default PostApi;

@@ -6,10 +6,11 @@ import sortBy  from 'sort-by';
 //import PropTypes from 'prop-types';
 
 import LoadingFull from '../components/LoadingFull';
+import VoteButton from '../components/VoteButton';
 
 // react-redux
 import { connect } from 'react-redux';
-import { getDetailPost, loadPostComments, insertPost } from '../actions/PostAction';
+import { getDetailPost, loadPostComments, insertPost, votePost } from '../actions/PostAction';
 
 import { Header, Grid, Container, Item, Divider, Button, Label, Modal, Form } from 'semantic-ui-react';
 
@@ -63,6 +64,20 @@ class Home extends Component {
 
   handleCatChange = (e, {value}) => {
     this.setState({ cat: value });
+  }
+
+  votePost = (post, action) => {
+    console.log("post id", post.id)
+    console.log("action", action)
+
+    this.props.votePost(post, action)
+
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 1000)
   }
 
   render() {
@@ -140,6 +155,10 @@ class Home extends Component {
             </Item.Meta>
             <Item.Description>{post.body}</Item.Description>
             <Item.Extra>
+              <VoteButton
+                data = {post}
+                votePost = {(data, action) => this.votePost(data, action)}
+              />
               {DetailsButton(post)}
             </Item.Extra>
           </Item.Content>
@@ -211,7 +230,8 @@ function mapDispatchToProps (dispatch) {
   return {
     getPost: (id) => dispatch(getDetailPost(id))
                      .then(() => dispatch(loadPostComments(id))),
-    addPost: (data) => dispatch(insertPost(data))
+    addPost: (data) => dispatch(insertPost(data)),
+    votePost: (data, action) => dispatch(votePost(data, action))
   }
 }
 
