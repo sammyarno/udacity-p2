@@ -10,7 +10,7 @@ import VoteButton from '../components/VoteButton';
 
 // react-redux
 import { connect } from 'react-redux';
-import { getDetailPost, loadPostComments, insertPost, votePost } from '../actions/PostAction';
+import { deletePost, updatePost, getDetailPost, loadPostComments, insertPost, votePost } from '../actions/PostAction';
 import { changeMenu } from '../actions/MenuAction';
 
 import { Header, Grid, Container, Item, Divider, Button, Label, Modal, Form } from 'semantic-ui-react';
@@ -27,6 +27,7 @@ class Home extends Component {
 
   state = {
     modalOpen: false,
+    modalPostOpen: false,
     loading: false,
     sortby: '-voteScore'
   }
@@ -77,9 +78,37 @@ class Home extends Component {
     }, 500)
   }
 
+  submitDeletePost = (id) => {
+    this.setState({ loading: true })
+    this.props.deletePost(id)
+
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+      this.modalPostClose()
+    }, 3000)
+  }
+  submitUpdatePost = (data) => {
+    this.setState({ loading: true })
+    this.props.updatePost(data)
+
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+      this.modalPostClose()
+    }, 3000)
+  }
+
+  modalPostOpen = (post) => {
+    this.setState({ modalPostOpen: true, data: post })
+  }
+  modalPostClose = () => this.setState({ modalPostOpen: false })
+
   render() {
     const {cats, posts, getPost} = this.props
-    const {modalOpen, postid, loading, sortby} = this.state
+    const {modalOpen, modalPostOpen, postid, loading, sortby, data} = this.state
 
     const catOptions = [
       { key: '0', text: 'React', value: 'react' },
@@ -134,6 +163,39 @@ class Home extends Component {
       </Grid.Column>
     )
 
+    const postModal = data && (
+      <Modal open={modalPostOpen} onClose={this.modalPostClose}>
+        <Modal.Header>Edit Post</Modal.Header>
+          <Modal.Content image>
+            <Modal.Description>
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column>
+                    <Form id='edit-post-form' onSubmit={e => this.submitUpdatePost(e.target)}>
+                      <Form.Group widths='equal'>
+                        <Form.Input name='postid' label='PostID' value={data.id} readOnly />
+                        <Form.Input name='timestamp' label='Timestamp' value={data.timestamp} readOnly />
+                      </Form.Group>
+                      <Divider />
+                      <Form.Group>
+                        <Form.Input name='title' label='Title' placeholder={data.title} width={8} required/>
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Input name='author' label='Author' value={data.author} width={10} readOnly/>
+                      </Form.Group>
+                      <Form.Group widths='equal'>
+                        <Form.TextArea name='body' label='Body' placeholder={data.body} rows={2} autoHeight required/>
+                      </Form.Group>
+                      <Button type='submit' floated='right' color='teal' content='Edit this Post' form='edit-post-form'/>
+                    </Form>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
+      )
+
     const DetailsButton = (post) => (
       <Link to={`/${post.category}/${post.id}`}>
         <Button basic color='orange' floated='right' icon='right chevron'
@@ -161,6 +223,11 @@ class Home extends Component {
                 data = {post}
                 votePost = {(data, action) => this.votePost(data, action)}
               />
+              <Button.Group>
+                <Button negative content='Delete' onClick={() => this.submitDeletePost(post.id)} />
+                <Button.Or />
+                <Button positive content='Edit' onClick={() => this.modalPostOpen(post)}/>
+              </Button.Group>
               {DetailsButton(post)}
             </Item.Extra>
           </Item.Content>
@@ -181,6 +248,7 @@ class Home extends Component {
       <Container fluid>
         <br/> <br/>
         {insertModal}
+        {postModal}
         <Grid centered stackable>
           <Grid.Row>
             <Header as='h1' disabled content='Categories' />
@@ -230,6 +298,8 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
+    deletePost: (id) => dispatch(deletePost(id)),
+    updatePost: (data) => dispatch(updatePost(data)),
     getPost: (id) => dispatch(getDetailPost(id))
                      .then(() => dispatch(loadPostComments(id))),
     addPost: (data) => dispatch(insertPost(data)),
