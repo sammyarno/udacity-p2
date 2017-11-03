@@ -12,24 +12,7 @@ const ScrollStyle = {
 
 class App extends Component {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     backend: 'backend-data'
-  //   }
-  // }
-  //
-  // componentDidMount() {
-  //   const url = `${process.env.REACT_APP_BACKEND}/posts/8xf0y6ziyjabvozdd253nd/comments`;
-  //   fetch(url, { headers: { 'Authorization': 'Sam' } } )
-  //     .then( (res) => { return(res.text()) })
-  //     .then((data) => {
-  //       this.setState({backend:data});
-  //     });
-  // }
-
   render() {
-    // console.log(this.state.backend)
     return (
       <div className="App">
         <Header />
@@ -42,4 +25,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

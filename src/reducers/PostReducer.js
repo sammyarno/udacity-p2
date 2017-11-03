@@ -52,7 +52,8 @@ export default function postReducer(state = initialState.posts, action) {
         ...state,
         posts: [
           ...state['posts'].filter(data => data.id !== action.post.id)
-        ]
+        ],
+        post: null
       }
     case types.LOAD_POST_COMMENTS_SUCCESS:
       return {

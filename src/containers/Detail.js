@@ -4,6 +4,8 @@ import uuidv4 from 'uuid/v4';
 import sortBy  from 'sort-by';
 // import PropTypes from 'prop-types';
 
+import NotFound from './NotFound.js';
+
 import LoadingFull from '../components/LoadingFull';
 import VoteButton from '../components/VoteButton';
 
@@ -12,10 +14,6 @@ import { Container, Grid, Header, Item, Label, Divider, Button, Modal, Form } fr
 import { deletePostComment, insertPostComment, updatePostComment, deletePost, updatePost, votePost } from '../actions/PostAction';
 
 class Detail extends Component {
-
-  // static propTypes = {
-  //   post: PropTypes.object.isRequired
-  // };
 
   state = {
     modalOpen: false,
@@ -254,7 +252,7 @@ class Detail extends Component {
                       <Form.Input name='author' label='Author' value={data.author} width={10} readOnly/>
                     </Form.Group>
                     <Form.Group widths='equal'>
-                      <Form.TextArea name='body' label='Comment' placeholder="Comment.." rows={2} autoHeight required/>
+                      <Form.TextArea name='body' label='Comment' placeholder={data.body} rows={2} autoHeight required/>
                     </Form.Group>
                     <Button type='submit' floated='right' color='teal' content='Edit Comment' form='edit-comment-form'/>
                   </Form>
@@ -301,7 +299,10 @@ class Detail extends Component {
 
     return (
       <Container fluid>
-        <br/> <br/>
+        {post ?
+        (
+          <Container fluid>
+          <br/> <br/>
           {postDetail}
           {insertCommentModal}
           {postModal}
@@ -322,6 +323,10 @@ class Detail extends Component {
           <LoadingFull
             loading = {loading}
           />
+          </Container>
+        ) : (
+          <NotFound />
+        )}
       </Container>
     )
 

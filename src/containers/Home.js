@@ -178,13 +178,13 @@ class Home extends Component {
                       </Form.Group>
                       <Divider />
                       <Form.Group>
-                        <Form.Input name='title' label='Title' width={8} required/>
+                        <Form.Input name='title' label='Title' placeholder={data.title} width={8} required/>
                       </Form.Group>
                       <Form.Group>
                         <Form.Input name='author' label='Author' value={data.author} width={10} readOnly/>
                       </Form.Group>
                       <Form.Group widths='equal'>
-                        <Form.TextArea name='body' label='Body' rows={2} autoHeight required/>
+                        <Form.TextArea name='body' label='Body' placeholder={data.body} rows={2} autoHeight required/>
                       </Form.Group>
                       <Button type='submit' floated='right' color='teal' content='Edit this Post' form='edit-post-form'/>
                     </Form>
